@@ -11,7 +11,6 @@ namespace Northwind.ViewModels
 {
     public class RegionViewModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? RegionID { get; set; }
 
         public string RegionName { get; set; }

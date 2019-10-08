@@ -16,39 +16,25 @@ namespace Northwind.Controllers
     {
         [Route("Create")]
         [HttpPost]
-        public IHttpActionResult Create([FromBody] RegionViewModel dataBody)
+        public IHttpActionResult Create([FromBody] RegionDetailViewModel dataBody)
         {
             using (var db = new DB_Context())
             {
                 try
                 {
                     Dictionary<string, object> result = new Dictionary<string, object>();
-                    List<RegionViewModel> regionTemp = new List<RegionViewModel>();
-                    string notif = "Insert data success";
-                    Region newRegion = new Region()
-                    {
-                        RegionID = dataBody.RegionID,
-                        RegionDescription = dataBody.RegionName+"|"+dataBody.RegionLangitude+"|"+dataBody.RegionLatitude+"|"+dataBody.Country
-                    };
-                    //if (newRegion.RegionDescription.Substring(newRegion.RegionDescription.Length - 3) == "INA")
-                    if (dataBody.Country.Contains("INA"))
-                    {
-                        Territory newTeritory = new Territory()
-                        {
-                            TerritoryID = "INA-01",
-                            TerritoryDescription = "Bandung salah satu wilayah yang berada di indonesia",
-                            RegionID = dataBody.RegionID
-                        };
-                        db.Territories.Add(newTeritory);
-                        result.Add("data teritory", newTeritory);
-                        notif = "Insert data success with Teritory added";
-                    };
-                    //db.Regions.Where(s => s.RegionID == newRegion.RegionID);
-                    result.Add("data region", newRegion);
-                    result.Add("Message", notif);
-                    db.Regions.Add(newRegion);
+                    List<RegionDetailViewModel> listDetail = new List<RegionDetailViewModel>();
+                    var temp = dataBody.convertToRegion();
+                    db.Regions.Add(temp);
                     db.SaveChanges();
-
+                    var regTemp = db.Regions.Where(dt => dt.RegionID == dataBody.RegionID).AsEnumerable().ToList();
+                    foreach (var item in regTemp)
+                    {
+                        RegionDetailViewModel regView = new RegionDetailViewModel(item);
+                        listDetail.Add(regView);
+                    }
+                    result.Add("data region", listDetail);
+                    dataBody.InputData(db);
                     return Ok(result);
                 }
                 catch (Exception)
@@ -142,4 +128,6 @@ namespace Northwind.Controllers
 
         
     }
+
+
 }
