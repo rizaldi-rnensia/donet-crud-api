@@ -16,7 +16,7 @@ namespace Northwind.EntityFramworks
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int RegionID { get; set; }
+        public int? RegionID { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -24,5 +24,9 @@ namespace Northwind.EntityFramworks
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Territory> Territories { get; set; }
+        //public string RegionName { get; internal set; }
+        //public string RegionLangitude { get; internal set; }
+        //public string RegionLatitude { get; internal set; }
+        //public string Country { get; internal set; }
     }
 }
