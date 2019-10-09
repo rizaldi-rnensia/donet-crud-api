@@ -28,11 +28,8 @@ namespace Northwind.Controllers
                     db.Regions.Add(temp);
                     db.SaveChanges();
                     var regTemp = db.Regions.Where(dt => dt.RegionID == dataBody.RegionID).AsEnumerable().ToList();
-                    foreach (var item in regTemp)
-                    {
-                        RegionDetailViewModel regView = new RegionDetailViewModel(item);
-                        listDetail.Add(regView);
-                    }
+                    RegionDetailViewModel regView = new RegionDetailViewModel(regTemp);
+                    listDetail.Add(regView);
                     result.Add("data region", listDetail);
                     dataBody.InputData(db);
                     return Ok(result);
@@ -52,21 +49,20 @@ namespace Northwind.Controllers
             {
                 try
                 {
-                    Dictionary<string, object> result = new Dictionary<string, object>();
+                    RegionDetailViewModel listResult = new RegionDetailViewModel();
                     var listRegionEntity = db.Regions.AsQueryable();
-                    List<RegionViewModel> listRegion = new List<RegionViewModel>();
+                    List<RegionDetailViewModel> listRegion = new List<RegionDetailViewModel>();
                     if(regID != null)
                     {
                         listRegionEntity = listRegionEntity.Where(data => data.RegionID == regID);
                     }
                     foreach(var item in listRegionEntity.AsEnumerable().ToList())
                     {
-                        RegionViewModel region = new RegionViewModel(item);
+                        RegionDetailViewModel region = new RegionDetailViewModel(item);
                         listRegion.Add(region);
                     }
-                    result.Add("Message", "Read data success");
-                    result.Add("Data : ", listRegion);
-                    return Ok(result);
+                    Dictionary<string, object> finalReturn = listResult.FinalResult(listRegion, "Read Data Success");
+                    return Ok(finalReturn);
                 }
                 catch (Exception)
                 {
