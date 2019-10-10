@@ -35,6 +35,11 @@ namespace Northwind.ViewModels
 
         public bool Discontinued { get; set; }
 
+        public string ProductType { get; set; }
+
+        public Dictionary<string, object> ProductDetail { get; set; }
+
+
         public ProductViewModel()
         {
 
@@ -52,7 +57,6 @@ namespace Northwind.ViewModels
             UnitsOnOrder = entity.UnitsOnOrder;
             ReorderLevel = entity.ReorderLevel;
             Discontinued = entity.Discontinued;
-
         }
     }
 }

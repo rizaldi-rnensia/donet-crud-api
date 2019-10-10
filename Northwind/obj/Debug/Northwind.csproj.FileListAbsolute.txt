@@ -168,3 +168,6 @@ D:\PROJECT\dotnet\donet-crud-api\Northwind\obj\Debug\Northwind.csprojAssemblyRef
 D:\PROJECT\dotnet\donet-crud-api\Northwind\obj\Debug\Northwind.csproj.CopyComplete
 D:\PROJECT\dotnet\donet-crud-api\Northwind\obj\Debug\Northwind.dll
 D:\PROJECT\dotnet\donet-crud-api\Northwind\obj\Debug\Northwind.pdb
+D:\PROJECT\dotnet\donet-crud-api\Northwind\bin\AutoMapper.dll
+D:\PROJECT\dotnet\donet-crud-api\Northwind\bin\AutoMapper.pdb
+D:\PROJECT\dotnet\donet-crud-api\Northwind\bin\AutoMapper.xml

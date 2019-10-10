@@ -73,38 +73,36 @@ namespace Northwind.Controllers
         [HttpPost]
         public IHttpActionResult Create([FromBody] ProductViewModel dataBody)
         {
-            var db = new DB_Context();
-
-            try
+            using (var db = new DB_Context())
             {
-                Dictionary<string, object> result = new Dictionary<string, object>();
-
-                // Buat Object dan menginisialisasi dengan data dari body
-                Product newProduct = new Product()
+                try
                 {
-                    ProductID = dataBody.ProductID,
-                    ProductName = dataBody.ProductName,
-                    SupplierID = dataBody.SupplierID,
-                    CategoryID = dataBody.CategoryID,
-                    QuantityPerUnit = dataBody.QuantityPerUnit,
-                    UnitPrice = dataBody.UnitPrice,
-                    UnitsInStock = dataBody.UnitsInStock,
-                    UnitsOnOrder = dataBody.UnitsOnOrder,
-                    ReorderLevel = dataBody.ReorderLevel,
-                    Discontinued = dataBody.Discontinued
-                };
+                    Dictionary<string, object> result = new Dictionary<string, object>();
+                    Product newProduct = new Product()
+                    {
+                        ProductID = dataBody.ProductID,
+                        ProductName = dataBody.ProductName,
+                        SupplierID = dataBody.SupplierID,
+                        CategoryID = dataBody.CategoryID,
+                        QuantityPerUnit = dataBody.QuantityPerUnit,
+                        UnitPrice = dataBody.UnitPrice,
+                        UnitsInStock = dataBody.UnitsInStock,
+                        UnitsOnOrder = dataBody.UnitsOnOrder,
+                        ReorderLevel = dataBody.ReorderLevel,
+                        Discontinued = dataBody.Discontinued
+                    };
 
-                // menambahkan kategori baru ke Category Entity Database
-                db.Products.Add(newProduct);
-                // method yang digunakan untuk menyimpan perubahan baru di database
-                db.SaveChanges();
-                db.Dispose();
-                result.Add("Message", "Insert data success");
-                return Ok(result);
-            }
-            catch (Exception)
-            {
-                throw;
+                    // menambahkan kategori baru ke Category Entity Database
+                    db.Products.Add(newProduct);
+                    // method yang digunakan untuk menyimpan perubahan baru di database
+                    db.SaveChanges();
+                    result.Add("Message", "Insert data success");
+                    return Ok(result);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 

@@ -38,6 +38,11 @@ namespace Northwind.EntityFramworks
 
         public bool Discontinued { get; set; }
 
+        [StringLength(255)]
+        public string ProductType { get; set; }
+
+        [StringLength(1000)]
+        public string ProductDetail { get; set; }
         public virtual Category Category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
