@@ -332,7 +332,6 @@
     <Compile Include="ViewModels\ProductCustom\GarmentViewModel.cs" />
     <Compile Include="ViewModels\ProductCustom\MaterialViewModel.cs" />
     <Compile Include="ViewModels\ProductCustom\ProductCustomViewModel.cs" />
-    <Compile Include="ViewModels\ProductCustom\ProductDetailViewModel.cs" />
     <Compile Include="ViewModels\ProductCustom\TransportationServicesViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\RegionDetailViewModel.cs" />
