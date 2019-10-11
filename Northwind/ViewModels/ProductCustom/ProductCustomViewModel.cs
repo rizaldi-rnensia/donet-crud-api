@@ -39,15 +39,15 @@ namespace Northwind.ViewModels.ProductCustom
                         break;
                     case "GarmentItems":
                         GarmentViewModel garment = new GarmentViewModel(product);
-                        ProductDetail = garment.fromFoodToGarment();
+                        ProductDetail = garment.fromGarmentToDict();
                         break;
                     case "MaterialItems":
                         MaterialViewModel materi = new MaterialViewModel(product);
-                        ProductDetail = materi.fromFoodToMaterial();
+                        ProductDetail = materi.fromMaterialToDict();
                         break;
                     case "TransportationServices":
                         TransportationServicesViewModel trans = new TransportationServicesViewModel(product);
-                        ProductDetail = trans.fromFoodToTrans();
+                        ProductDetail = trans.fromTransToDict();
                         break;
                     default:
                         ProductDetail = null;

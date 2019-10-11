@@ -11,7 +11,7 @@ namespace Northwind.ViewModels.ProductCustom
 {
     public class TransportationServicesViewModel
     {
-        public string ProductID { get; set; }
+        public int ProductID { get; set; }
         public string ProductDescription { get; set; }
         public string VehicleType { get; set; }
         public string RoutePath { get; set; }
@@ -27,21 +27,20 @@ namespace Northwind.ViewModels.ProductCustom
         public TransportationServicesViewModel(Product product)
         {
             char[] delimiter = { '|' };
-            string[] prod = product.ProductDetail.Split(delimiter);
-            this.ProductID = product.ProductID.ToString();
-            if (prod.Length == 7)
+            this.ProductID = product.ProductID;
+            if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                this.ProductID = prod[0];
-                this.ProductDescription = prod[1];
-                this.VehicleType = prod[2];
-                this.RoutePath = prod[3];
-                this.RouteMilleage = prod[4];
-                this.CostCalculationMethod = prod[5];
-                this.CostRate = prod[6];
+                string[] prod = product.ProductDetail.Split(delimiter);
+                this.ProductDescription = prod[0];
+                this.VehicleType = prod[1];
+                this.RoutePath = prod[2];
+                this.RouteMilleage = prod[3];
+                this.CostCalculationMethod = prod[4];
+                this.CostRate = prod[5];
             }
         }
 
-        public Dictionary<string, object> fromFoodToTrans()
+        public Dictionary<string, object> fromTransToDict()
         {
             Dictionary<string, object> transDict = new Dictionary<string, object>();
             transDict.Add("ProductID", this.ProductID);
@@ -57,7 +56,6 @@ namespace Northwind.ViewModels.ProductCustom
         public string ConvertToTrans()
         {
             return
-                this.ProductID + "|" +
                 this.ProductDescription + "|" +
                 this.VehicleType + "|" +
                 this.RoutePath + "|" +

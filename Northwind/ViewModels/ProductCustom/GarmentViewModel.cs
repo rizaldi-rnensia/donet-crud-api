@@ -11,7 +11,7 @@ namespace Northwind.ViewModels.ProductCustom
 {
     public class GarmentViewModel
     {
-        public string ProductID { get; set; }
+        public int ProductID { get; set; }
         public string ProductDescription { get; set; }
         public string ProductionCode { get; set; }
         public string ProductionDate { get; set; }
@@ -31,27 +31,25 @@ namespace Northwind.ViewModels.ProductCustom
         public GarmentViewModel(Product product)
         {
             char[] delimiter = { '|' };
-            string[] prod = product.ProductDetail.Split(delimiter);
-            this.ProductID = product.ProductID.ToString();
-            if (prod.Length == 11)
+            this.ProductID = product.ProductID;
+            if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                //this.ProductID = prod[0];
-                this.ProductDescription = prod[1];
-                this.ProductionCode = prod[2];
-                this.ProductionDate = prod[3];
-                this.GarmentsType = prod[4];
-                this.Fabrics = prod[5];
-                this.GenderRelated = prod[6];
-                this.IsWaterProof = prod[7];
-                this.Color = prod[8];
-                this.Size = prod[9];
-                this.AgeGroup = prod[10];
+                string[] prod = product.ProductDetail.Split(delimiter);
+                this.ProductDescription = prod[0];
+                this.ProductionCode = prod[1];
+                this.ProductionDate = prod[2];
+                this.GarmentsType = prod[3];
+                this.Fabrics = prod[4];
+                this.GenderRelated = prod[5];
+                this.IsWaterProof = prod[6];
+                this.Color = prod[7];
+                this.Size = prod[8];
+                this.AgeGroup = prod[9];
             }
         }
         public string ConvertToGarment()
         {
             return
-                this.ProductID + "|" +
                 this.ProductDescription + "|" +
                 this.ProductionCode + "|" +
                 this.ProductionDate + "|" +
@@ -64,7 +62,7 @@ namespace Northwind.ViewModels.ProductCustom
                 this.AgeGroup;
         }
 
-        public Dictionary<string, object> fromFoodToGarment()
+        public Dictionary<string, object> fromGarmentToDict()
         {
             Dictionary<string, object> garmentDict = new Dictionary<string, object>();
             garmentDict.Add("ProductID", this.ProductID);

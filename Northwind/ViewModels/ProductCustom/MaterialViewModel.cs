@@ -11,7 +11,7 @@ namespace Northwind.ViewModels.ProductCustom
 {
     public class MaterialViewModel
     {
-        public string ProductID { get; set; }
+        public int ProductID { get; set; }
         public string ProductDescription { get; set; }
         public string ProductionCode { get; set; }
         public string ProductionDate { get; set; }
@@ -24,37 +24,7 @@ namespace Northwind.ViewModels.ProductCustom
         {
         }
 
-        public MaterialViewModel(Product product)
-        {
-            char[] delimiter = { '|' };
-            string[] prod = product.ProductDetail.Split(delimiter);
-            this.ProductID = product.ProductID.ToString();
-            if (prod.Length == 8)
-            {
-                //this.ProductID = prod[0];
-                this.ProductDescription = prod[1];
-                this.ProductionCode = prod[2];
-                this.ProductionDate = prod[3];
-                this.ExpiredDate = prod[4];
-                this.MaterialsType = prod[5];
-                this.UnitOfMeasurement = prod[6];
-                this.IsConsumable = prod[7];
-            }
-        }
-        public string ConvertToMateri()
-        {
-            return
-                this.ProductID + "|" +
-                this.ProductDescription + "|" +
-                this.ProductionCode + "|" +
-                this.ProductionDate + "|" +
-                this.ExpiredDate + "|" +
-                this.MaterialsType + "|" +
-                this.UnitOfMeasurement + "|" +
-                this.IsConsumable;
-        }
-
-        public Dictionary<string, object> fromFoodToMaterial()
+        public Dictionary<string, object> fromMaterialToDict()
         {
             Dictionary<string, object> materialDict = new Dictionary<string, object>();
             materialDict.Add("ProductID", this.ProductID);
@@ -67,5 +37,34 @@ namespace Northwind.ViewModels.ProductCustom
             materialDict.Add("IsConsumable", this.IsConsumable);
             return materialDict;
         }
+
+        public MaterialViewModel(Product product)
+        {
+            char[] delimiter = { '|' };
+            this.ProductID = product.ProductID;
+            if (!string.IsNullOrEmpty(product.ProductDetail))
+            {
+                string[] prod = product.ProductDetail.Split(delimiter);
+                this.ProductDescription = prod[0];
+                this.ProductionCode = prod[1];
+                this.ProductionDate = prod[2];
+                this.ExpiredDate = prod[3];
+                this.MaterialsType = prod[4];
+                this.UnitOfMeasurement = prod[5];
+                this.IsConsumable = prod[6];
+            }
+        }
+        public string ConvertToMateri()
+        {
+            return
+                this.ProductDescription + "|" +
+                this.ProductionCode + "|" +
+                this.ProductionDate + "|" +
+                this.ExpiredDate + "|" +
+                this.MaterialsType + "|" +
+                this.UnitOfMeasurement + "|" +
+                this.IsConsumable;
+        }
+
     }
 }

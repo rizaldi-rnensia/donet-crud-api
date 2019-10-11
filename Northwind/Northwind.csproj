@@ -328,6 +328,7 @@
     <Compile Include="ViewModels\OrderSupViewModel2.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel1.cs" />
+    <Compile Include="ViewModels\ProductCustom\CostCalculationViewModel.cs" />
     <Compile Include="ViewModels\ProductCustom\FoodBevItemViewModel.cs" />
     <Compile Include="ViewModels\ProductCustom\GarmentViewModel.cs" />
     <Compile Include="ViewModels\ProductCustom\MaterialViewModel.cs" />

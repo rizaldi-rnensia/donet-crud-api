@@ -43,7 +43,6 @@ namespace Northwind.ViewModels.ProductCustom
         public FoodBevItemViewModel(Product product)
         {
             char[] delimiter = { '|' };
-            
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
@@ -61,7 +60,6 @@ namespace Northwind.ViewModels.ProductCustom
         public string ConvertToFood()
         {
             return
-                //this.ProductID + "|" +
                 this.ProductDescription + "|" +
                 this.ProductionCode + "|" +
                 this.ProductionDate + "|" +
