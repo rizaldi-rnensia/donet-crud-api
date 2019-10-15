@@ -6,10 +6,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
 using Northwind.EntityFramworks;
+using Northwind.ViewModels.ProductCustom.Items;
 
-namespace Northwind.ViewModels.ProductCustom
+namespace Northwind.ViewModels.ProductCustom.Items
 {
-    public class GarmentViewModel
+    public class GarmentViewModel : IProductItem
     {
         public int ProductID { get; set; }
         public string ProductDescription { get; set; }
@@ -22,6 +23,8 @@ namespace Northwind.ViewModels.ProductCustom
         public string Color { get; set; }
         public string Size { get; set; }
         public string AgeGroup { get; set; }
+        public string UnitOfMeasurement { get; set; }
+        public string CostRate { get; set; }
 
         public GarmentViewModel()
         {
@@ -30,7 +33,7 @@ namespace Northwind.ViewModels.ProductCustom
 
         public GarmentViewModel(Product product)
         {
-            char[] delimiter = { '|' };
+            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
@@ -45,24 +48,28 @@ namespace Northwind.ViewModels.ProductCustom
                 this.Color = prod[7];
                 this.Size = prod[8];
                 this.AgeGroup = prod[9];
+                this.UnitOfMeasurement = prod[10];
+                this.CostRate = prod[11];
             }
         }
-        public string ConvertToGarment()
+        public string ConvertToItem()
         {
             return
-                this.ProductDescription + "|" +
-                this.ProductionCode + "|" +
-                this.ProductionDate + "|" +
-                this.GarmentsType + "|" +
-                this.Fabrics + "|" +
-                this.GenderRelated + "|" +
-                this.IsWaterProof + "|" +
-                this.Color + "|" +
-                this.Size + "|" +
-                this.AgeGroup;
+                this.ProductDescription + ";" +
+                this.ProductionCode + ";" +
+                this.ProductionDate + ";" +
+                this.GarmentsType + ";" +
+                this.Fabrics + ";" +
+                this.GenderRelated + ";" +
+                this.IsWaterProof + ";" +
+                this.Color + ";" +
+                this.Size + ";" +
+                this.AgeGroup + ";" +
+                this.UnitOfMeasurement + ";" +
+                this.CostRate;
         }
 
-        public Dictionary<string, object> fromGarmentToDict()
+        public Dictionary<string, object> fromItemToDict()
         {
             Dictionary<string, object> garmentDict = new Dictionary<string, object>();
             garmentDict.Add("ProductID", this.ProductID);
@@ -76,7 +83,14 @@ namespace Northwind.ViewModels.ProductCustom
             garmentDict.Add("Color", this.Color);
             garmentDict.Add("Size", this.Size);
             garmentDict.Add("AgeGroup", this.AgeGroup);
+            garmentDict.Add("UnitOfMeasurement", this.UnitOfMeasurement);
+            garmentDict.Add("CostRate", this.CostRate);
             return garmentDict;
+        }
+
+        public decimal unitPriceItemCalculation()
+        {
+            return decimal.Parse(this.CostRate) * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
         }
     }
 }

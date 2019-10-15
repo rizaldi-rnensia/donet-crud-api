@@ -6,10 +6,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
 using Northwind.EntityFramworks;
+using Northwind.ViewModels.ProductCustom.Services;
 
-namespace Northwind.ViewModels.ProductCustom
+namespace Northwind.ViewModels.ProductCustom.Services
 {
-    public class TransportationServicesViewModel
+    public class TransportationServicesViewModel : IProductService
     {
         public int ProductID { get; set; }
         public string ProductDescription { get; set; }
@@ -26,7 +27,7 @@ namespace Northwind.ViewModels.ProductCustom
 
         public TransportationServicesViewModel(Product product)
         {
-            char[] delimiter = { '|' };
+            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
@@ -40,7 +41,7 @@ namespace Northwind.ViewModels.ProductCustom
             }
         }
 
-        public Dictionary<string, object> fromTransToDict()
+        public Dictionary<string, object> fromServToDict()
         {
             Dictionary<string, object> transDict = new Dictionary<string, object>();
             transDict.Add("ProductID", this.ProductID);
@@ -53,15 +54,42 @@ namespace Northwind.ViewModels.ProductCustom
             
             return transDict;
         }
-        public string ConvertToTrans()
+        public string ConvertToServ()
         {
             return
-                this.ProductDescription + "|" +
-                this.VehicleType + "|" +
-                this.RoutePath + "|" +
-                this.RouteMilleage + "|" +
-                this.CostCalculationMethod + "|" +
+                this.ProductDescription + ";" +
+                this.VehicleType + ";" +
+                this.RoutePath + ";" +
+                this.RouteMilleage + ";" +
+                this.CostCalculationMethod + ";" +
                 this.CostRate;
+        }
+
+        public decimal? rateCostCalculation(string condition = null, int? userDemand = null, decimal? Duration = null)
+        {
+            int? valueResult = null;
+            if (CostCalculationMethod.Equals("FixPerRoute"))
+            {
+                valueResult = 1 * Int32.Parse(CostRate);
+            }
+            if (CostCalculationMethod.Equals("PerMiles"))
+            {
+                valueResult = Int32.Parse(RouteMilleage) * (Int32.Parse(CostRate) / 2);
+            }
+            if (CostCalculationMethod.Equals("PerMilesWithCondition"))
+            {
+                var nilai = 0;
+                if (condition == "GoodWeather")
+                {
+                    nilai = 5;
+                }
+                else if (condition == "BadWeather")
+                {
+                    nilai = 15;
+                }
+                valueResult = (Int32.Parse(RouteMilleage) * Int32.Parse(CostRate) / 2) * (((nilai + (userDemand / 50)) + 95)) / 100;
+            }
+            return valueResult * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
         }
     }
 }

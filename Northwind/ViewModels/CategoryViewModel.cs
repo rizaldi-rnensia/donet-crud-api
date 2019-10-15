@@ -17,7 +17,6 @@ namespace Northwind.ViewModels
         {
 
         }
-
         public CategoryViewModel(Category entity)
         {
             CategoryID = entity.CategoryID;

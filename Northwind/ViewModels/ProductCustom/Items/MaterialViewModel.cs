@@ -6,10 +6,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
 using Northwind.EntityFramworks;
+using Northwind.ViewModels.ProductCustom.Items;
 
-namespace Northwind.ViewModels.ProductCustom
+namespace Northwind.ViewModels.ProductCustom.Items
 {
-    public class MaterialViewModel
+    public class MaterialViewModel : IProductItem
     {
         public int ProductID { get; set; }
         public string ProductDescription { get; set; }
@@ -17,14 +18,15 @@ namespace Northwind.ViewModels.ProductCustom
         public string ProductionDate { get; set; }
         public string ExpiredDate { get; set; }
         public string MaterialsType { get; set; }
-        public string UnitOfMeasurement { get; set; }
         public string IsConsumable { get; set; }
-
+        public string UnitOfMeasurement { get; set; }
+        public string CostRate { get; set; }
+        
         public MaterialViewModel()
         {
         }
 
-        public Dictionary<string, object> fromMaterialToDict()
+        public Dictionary<string, object> fromItemToDict()
         {
             Dictionary<string, object> materialDict = new Dictionary<string, object>();
             materialDict.Add("ProductID", this.ProductID);
@@ -33,14 +35,15 @@ namespace Northwind.ViewModels.ProductCustom
             materialDict.Add("ProductionDate", this.ProductionDate);
             materialDict.Add("ExpiredDate", this.ExpiredDate);
             materialDict.Add("MaterialsType", this.MaterialsType);
-            materialDict.Add("UnitOfMeasurement", this.UnitOfMeasurement);
             materialDict.Add("IsConsumable", this.IsConsumable);
+            materialDict.Add("UnitOfMeasurement", this.UnitOfMeasurement);
+            materialDict.Add("CostRate", this.CostRate);
             return materialDict;
         }
 
         public MaterialViewModel(Product product)
         {
-            char[] delimiter = { '|' };
+            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
@@ -50,21 +53,28 @@ namespace Northwind.ViewModels.ProductCustom
                 this.ProductionDate = prod[2];
                 this.ExpiredDate = prod[3];
                 this.MaterialsType = prod[4];
-                this.UnitOfMeasurement = prod[5];
-                this.IsConsumable = prod[6];
+                this.IsConsumable = prod[5];
+                this.UnitOfMeasurement = prod[6];
+                this.CostRate = prod[7];
             }
         }
-        public string ConvertToMateri()
+        public string ConvertToItem()
         {
             return
-                this.ProductDescription + "|" +
-                this.ProductionCode + "|" +
-                this.ProductionDate + "|" +
-                this.ExpiredDate + "|" +
-                this.MaterialsType + "|" +
-                this.UnitOfMeasurement + "|" +
-                this.IsConsumable;
+                this.ProductDescription + ";" +
+                this.ProductionCode + ";" +
+                this.ProductionDate + ";" +
+                this.ExpiredDate + ";" +
+                this.MaterialsType + ";" +
+                this.IsConsumable + ";" +
+                this.UnitOfMeasurement + ";" +
+                this.CostRate;
+                
         }
 
+        public decimal unitPriceItemCalculation()
+        {
+            return decimal.Parse(this.CostRate) * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
+        }
     }
 }

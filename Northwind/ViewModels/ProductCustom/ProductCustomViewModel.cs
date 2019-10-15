@@ -7,6 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
 using Northwind.EntityFramworks;
 using AutoMapper;
+using Northwind.ViewModels.ProductCustom.Items;
+using Northwind.ViewModels.ProductCustom.Services;
 
 namespace Northwind.ViewModels.ProductCustom
 {
@@ -15,7 +17,7 @@ namespace Northwind.ViewModels.ProductCustom
         public ProductCustomViewModel()
         {
         }
-        internal ProductCustomViewModel(Product product)
+        public ProductCustomViewModel(Product product)
         {
             ProductID = product.ProductID;
             ProductName = product.ProductName;
@@ -28,26 +30,29 @@ namespace Northwind.ViewModels.ProductCustom
             ReorderLevel = product.ReorderLevel;
             Discontinued = product.Discontinued;
             ProductType = product.ProductType; 
-            //if (ProductType != null && product.ProductType.Contains("FoodAndBeverageItems"))
             if(ProductType != null)
             {
                 switch (ProductType)
                 {
                     case "FoodAndBeverageItems":
                         FoodBevItemViewModel food = new FoodBevItemViewModel(product);
-                        ProductDetail = food.fromFoodToDict();
+                        ProductDetail = food.fromItemToDict();
                         break;
                     case "GarmentItems":
                         GarmentViewModel garment = new GarmentViewModel(product);
-                        ProductDetail = garment.fromGarmentToDict();
+                        ProductDetail = garment.fromItemToDict();
                         break;
                     case "MaterialItems":
                         MaterialViewModel materi = new MaterialViewModel(product);
-                        ProductDetail = materi.fromMaterialToDict();
+                        ProductDetail = materi.fromItemToDict();
                         break;
                     case "TransportationServices":
                         TransportationServicesViewModel trans = new TransportationServicesViewModel(product);
-                        ProductDetail = trans.fromTransToDict();
+                        ProductDetail = trans.fromServToDict();
+                        break;
+                    case "TelecommunicationServices":
+                        TelecomunicationServiceViewModel telecomunication = new TelecomunicationServiceViewModel(product);
+                        ProductDetail = telecomunication.fromServToDict();
                         break;
                     default:
                         ProductDetail = null;
@@ -59,33 +64,45 @@ namespace Northwind.ViewModels.ProductCustom
                 ProductDetail = null;
             }
         }
-        internal Product ConvertToProduct()
+        public Product ConvertToProduct(string condition = null, int? userDemand = null, decimal? Duration = null)
         {
+            decimal? price=null;
             var prodDet = "";
             var config = new MapperConfiguration(cfg => { });
             var mapper = new Mapper(config);
-            if (this.ProductType.Contains("FoodAndBeverageItems"))
+            if (this.ProductType.Equals("FoodAndBeverageItems"))
             {
                 FoodBevItemViewModel food = mapper.Map<FoodBevItemViewModel>(this.ProductDetail);
-                prodDet = food.ConvertToFood();
+                prodDet = food.ConvertToItem();
+                price = food.unitPriceItemCalculation();
             }   
-            else if (this.ProductType.Contains("TransportationServices"))
-            {
-                TransportationServicesViewModel trans = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
-                prodDet = trans.ConvertToTrans();
-            }
-            else if (this.ProductType.Contains("MaterialItems"))
+            else if (this.ProductType.Equals("MaterialItems"))
             {
                 MaterialViewModel materi = mapper.Map<MaterialViewModel>(this.ProductDetail);
-                prodDet = materi.ConvertToMateri();
+                prodDet = materi.ConvertToItem();
+                price = materi.unitPriceItemCalculation();
             }
-            else if (this.ProductType.Contains("GarmentItems"))
+            else if (this.ProductType.Equals("GarmentItems"))
             {
                 GarmentViewModel garment = mapper.Map<GarmentViewModel>(this.ProductDetail);
-                prodDet = garment.ConvertToGarment();
+                prodDet = garment.ConvertToItem();
+                price = garment.unitPriceItemCalculation();
+            }
+            else if (this.ProductType.Equals("TransportationServices"))
+            {
+                TransportationServicesViewModel trans = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
+                prodDet = trans.ConvertToServ();
+                price = trans.rateCostCalculation(condition, userDemand, Duration);
+            }
+            else if (this.ProductType.Equals("TelecommunicationServices"))
+            {
+                TelecomunicationServiceViewModel tele = mapper.Map<TelecomunicationServiceViewModel>(this.ProductDetail);
+                prodDet = tele.ConvertToServ();
+                price = tele.rateCostCalculation(condition, userDemand, Duration);
             }
             else
             {
+                price = 0;
                 ProductDetail = null;
             }
             return new Product()
@@ -95,7 +112,7 @@ namespace Northwind.ViewModels.ProductCustom
                 SupplierID = this.SupplierID,
                 CategoryID = this.CategoryID,
                 QuantityPerUnit = this.QuantityPerUnit,
-                UnitPrice = this.UnitPrice,
+                UnitPrice = price,
                 UnitsInStock = this.UnitsInStock,
                 UnitsOnOrder = this.UnitsOnOrder,
                 ReorderLevel = this.ReorderLevel,

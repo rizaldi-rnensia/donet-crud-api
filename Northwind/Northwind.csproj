@@ -317,6 +317,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\TestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\OrderCustome1ViewModel.cs" />
@@ -329,11 +330,14 @@
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel1.cs" />
     <Compile Include="ViewModels\ProductCustom\CostCalculationViewModel.cs" />
-    <Compile Include="ViewModels\ProductCustom\FoodBevItemViewModel.cs" />
-    <Compile Include="ViewModels\ProductCustom\GarmentViewModel.cs" />
-    <Compile Include="ViewModels\ProductCustom\MaterialViewModel.cs" />
+    <Compile Include="ViewModels\ProductCustom\Items\FoodBevItemViewModel.cs" />
+    <Compile Include="ViewModels\ProductCustom\Items\GarmentViewModel.cs" />
+    <Compile Include="ViewModels\ProductCustom\Items\IProductItem.cs" />
+    <Compile Include="ViewModels\ProductCustom\Items\MaterialViewModel.cs" />
     <Compile Include="ViewModels\ProductCustom\ProductCustomViewModel.cs" />
-    <Compile Include="ViewModels\ProductCustom\TransportationServicesViewModel.cs" />
+    <Compile Include="ViewModels\ProductCustom\Services\IProductService.cs" />
+    <Compile Include="ViewModels\ProductCustom\Services\TelecomunicationServiceViewModel.cs" />
+    <Compile Include="ViewModels\ProductCustom\Services\TransportationServicesViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\RegionDetailViewModel.cs" />
     <Compile Include="ViewModels\RegionViewModel.cs" />
@@ -410,7 +414,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
