@@ -21,7 +21,9 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string IsConsumable { get; set; }
         public string UnitOfMeasurement { get; set; }
         public string CostRate { get; set; }
-        
+
+        char[] delimiter = { '\'' };
+
         public MaterialViewModel()
         {
         }
@@ -43,7 +45,6 @@ namespace Northwind.ViewModels.ProductCustom.Items
 
         public MaterialViewModel(Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
@@ -61,13 +62,13 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string ConvertToItem()
         {
             return
-                this.ProductDescription + ";" +
-                this.ProductionCode + ";" +
-                this.ProductionDate + ";" +
-                this.ExpiredDate + ";" +
-                this.MaterialsType + ";" +
-                this.IsConsumable + ";" +
-                this.UnitOfMeasurement + ";" +
+                this.ProductDescription + delimiter +
+                this.ProductionCode + delimiter +
+                this.ProductionDate + delimiter +
+                this.ExpiredDate + delimiter +
+                this.MaterialsType + delimiter +
+                this.IsConsumable + delimiter +
+                this.UnitOfMeasurement + delimiter +
                 this.CostRate;
                 
         }

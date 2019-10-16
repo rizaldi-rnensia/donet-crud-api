@@ -21,20 +21,7 @@ namespace Northwind.Controllers
             {
                 using (var db = new DB_Context())
                 {
-                    Product product = new Product();
-                    if(condition == null && userDemand==null && Duration != null)
-                    {
-                        product = dataBody.ConvertToProduct(null, null, Duration);
-                    }
-                    else if(condition != null && userDemand != null && Duration == null)
-                    {
-                        product = dataBody.ConvertToProduct(condition, userDemand, null);
-                    }
-                    else if(condition == null && userDemand == null && Duration == null)
-                    {
-                        product = dataBody.ConvertToProduct(condition, userDemand, null);
-                    }
-                    //Product product = dataBody.ConvertToProduct(condition, userDemand, Duration);
+                    Product product = dataBody.ConvertToProduct(condition, userDemand, Duration);
                     db.Products.Add(product);
                     db.SaveChanges();
                     return Ok("Data Saved Successfully");

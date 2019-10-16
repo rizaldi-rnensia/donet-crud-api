@@ -26,6 +26,7 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string UnitOfMeasurement { get; set; }
         public string CostRate { get; set; }
 
+        private char[] delimiter = { '\'' };
         public GarmentViewModel()
         {
 
@@ -33,7 +34,6 @@ namespace Northwind.ViewModels.ProductCustom.Items
 
         public GarmentViewModel(Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
@@ -55,17 +55,17 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string ConvertToItem()
         {
             return
-                this.ProductDescription + ";" +
-                this.ProductionCode + ";" +
-                this.ProductionDate + ";" +
-                this.GarmentsType + ";" +
-                this.Fabrics + ";" +
-                this.GenderRelated + ";" +
-                this.IsWaterProof + ";" +
-                this.Color + ";" +
-                this.Size + ";" +
-                this.AgeGroup + ";" +
-                this.UnitOfMeasurement + ";" +
+                this.ProductDescription + delimiter +
+                this.ProductionCode + delimiter +
+                this.ProductionDate + delimiter +
+                this.GarmentsType + delimiter +
+                this.Fabrics + delimiter +
+                this.GenderRelated + delimiter +
+                this.IsWaterProof + delimiter +
+                this.Color + delimiter +
+                this.Size + delimiter +
+                this.AgeGroup + delimiter +
+                this.UnitOfMeasurement + delimiter +
                 this.CostRate;
         }
 

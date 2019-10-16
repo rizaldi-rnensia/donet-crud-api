@@ -24,6 +24,7 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string UnitOfMeasurement { get; set; }
         public string CostRate { get; set; }
 
+        private char[] delimiter = { '\'' };
         public FoodBevItemViewModel()
         {
         }
@@ -45,7 +46,6 @@ namespace Northwind.ViewModels.ProductCustom.Items
         }
         public FoodBevItemViewModel(Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
@@ -66,15 +66,15 @@ namespace Northwind.ViewModels.ProductCustom.Items
         {
             
             return
-                this.ProductDescription + ";" +
-                this.ProductionCode + ";" +
-                this.ProductionDate + ";" +
-                this.ExpiredDate + ";" +
-                this.NetWeight + ";" +
-                this.Ingredients + ";" +
-                this.DailyValue + ";" +
-                this.Certification + ";" +
-                this.UnitOfMeasurement + ";" +
+                this.ProductDescription + delimiter +
+                this.ProductionCode + delimiter +
+                this.ProductionDate + delimiter +
+                this.ExpiredDate + delimiter +
+                this.NetWeight + delimiter +
+                this.Ingredients + delimiter +
+                this.DailyValue + delimiter +
+                this.Certification + delimiter +
+                this.UnitOfMeasurement + delimiter +
                 this.CostRate;
         }
 
