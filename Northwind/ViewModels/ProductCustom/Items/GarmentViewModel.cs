@@ -26,7 +26,10 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string UnitOfMeasurement { get; set; }
         public string CostRate { get; set; }
 
-        private char[] delimiter = { '\'' };
+        public char Delimiter()
+        {
+            return '\'';
+        }
         public GarmentViewModel()
         {
 
@@ -37,7 +40,7 @@ namespace Northwind.ViewModels.ProductCustom.Items
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                string[] prod = product.ProductDetail.Split(delimiter);
+                string[] prod = product.ProductDetail.Split(Delimiter());
                 this.ProductDescription = prod[0];
                 this.ProductionCode = prod[1];
                 this.ProductionDate = prod[2];
@@ -55,17 +58,17 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string ConvertToItem()
         {
             return
-                this.ProductDescription + delimiter +
-                this.ProductionCode + delimiter +
-                this.ProductionDate + delimiter +
-                this.GarmentsType + delimiter +
-                this.Fabrics + delimiter +
-                this.GenderRelated + delimiter +
-                this.IsWaterProof + delimiter +
-                this.Color + delimiter +
-                this.Size + delimiter +
-                this.AgeGroup + delimiter +
-                this.UnitOfMeasurement + delimiter +
+                this.ProductDescription + Delimiter() +
+                this.ProductionCode + Delimiter() +
+                this.ProductionDate + Delimiter() +
+                this.GarmentsType + Delimiter() +
+                this.Fabrics + Delimiter() +
+                this.GenderRelated + Delimiter() +
+                this.IsWaterProof + Delimiter() +
+                this.Color + Delimiter() +
+                this.Size + Delimiter() +
+                this.AgeGroup + Delimiter() +
+                this.UnitOfMeasurement + Delimiter() +
                 this.CostRate;
         }
 

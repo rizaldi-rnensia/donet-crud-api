@@ -8,6 +8,7 @@ namespace Northwind.ViewModels.ProductCustom.Services
 {
     interface IProductService
     {
+        char Delimiter();
         Dictionary<string, object> fromServToDict();
         string ConvertToServ();
 

@@ -24,9 +24,12 @@ namespace Northwind.ViewModels.ProductCustom.Items
         public string UnitOfMeasurement { get; set; }
         public string CostRate { get; set; }
 
-        private char[] delimiter = { '\'' };
         public FoodBevItemViewModel()
         {
+        }
+        public char Delimiter()
+        {
+            return '\'';
         }
         public Dictionary<string,object> fromItemToDict()
         {
@@ -49,7 +52,7 @@ namespace Northwind.ViewModels.ProductCustom.Items
             this.ProductID = product.ProductID;
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                string[] prod = product.ProductDetail.Split(delimiter);
+                string[] prod = product.ProductDetail.Split(Delimiter());
                 this.ProductDescription = prod[0];
                 this.ProductionCode = prod[1];
                 this.ProductionDate = prod[2];
@@ -66,15 +69,15 @@ namespace Northwind.ViewModels.ProductCustom.Items
         {
             
             return
-                this.ProductDescription + delimiter +
-                this.ProductionCode + delimiter +
-                this.ProductionDate + delimiter +
-                this.ExpiredDate + delimiter +
-                this.NetWeight + delimiter +
-                this.Ingredients + delimiter +
-                this.DailyValue + delimiter +
-                this.Certification + delimiter +
-                this.UnitOfMeasurement + delimiter +
+                this.ProductDescription + Delimiter() +
+                this.ProductionCode + Delimiter() +
+                this.ProductionDate + Delimiter() +
+                this.ExpiredDate + Delimiter() +
+                this.NetWeight + Delimiter() +
+                this.Ingredients + Delimiter() +
+                this.DailyValue + Delimiter() +
+                this.Certification + Delimiter() +
+                this.UnitOfMeasurement + Delimiter() +
                 this.CostRate;
         }
 
