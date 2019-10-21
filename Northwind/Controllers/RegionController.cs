@@ -84,7 +84,11 @@ namespace Northwind.Controllers
                     List<RegionViewModel> listRegion = new List<RegionViewModel>();
                     Region regionTemp = db.Regions.Find(dataBody.RegionID);
                     regionTemp.RegionID = dataBody.RegionID;
-                    regionTemp.RegionDescription = dataBody.RegionName + "|" + dataBody.RegionLangitude + "|" + dataBody.RegionLatitude + "|" + dataBody.Country;
+                    regionTemp.RegionDescription = 
+                        dataBody.RegionName + "|" + 
+                        dataBody.RegionLangitude + "|" + 
+                        dataBody.RegionLatitude + "|" + 
+                        dataBody.Country;
                     RegionViewModel region = new RegionViewModel(regionTemp);
                     listRegion.Add(region);
                     db.SaveChanges();

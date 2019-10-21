@@ -8,6 +8,7 @@ using Northwind.EntityFramworks;
 using Northwind.ViewModels;
 using Northwind.ViewModels.ProductCustom;
 
+
 namespace Northwind.Controllers
 {
     [RoutePrefix("api/ProductDetail")]
@@ -15,13 +16,13 @@ namespace Northwind.Controllers
     {
         [Route("Create")]
         [HttpPost]
-        public IHttpActionResult Create([FromBody] ProductCustomViewModel dataBody, string condition = null, int? userDemand = null, decimal? Duration = null)
+        public IHttpActionResult Create([FromBody] ProductCustomViewModel dataBody)
         {
             try
             {
                 using (var db = new DB_Context())
                 {
-                    Product product = dataBody.ConvertToProduct(condition, userDemand, Duration);
+                    Product product = dataBody.ConvertToProduct();
                     db.Products.Add(product);
                     db.SaveChanges();
                     return Ok("Data Saved Successfully");
@@ -84,38 +85,38 @@ namespace Northwind.Controllers
             }
         }
 
-        [Route("getTransportationCostCalculation")]
-        [HttpGet]
-        public IHttpActionResult CostCalculation(string condition, int userdemand)
-        {
-            using (var db = new DB_Context())
-            {
-                try
-                {
-                    var tem = db.Products.AsQueryable();
-                    Dictionary<string, object> result = new Dictionary<string, object>();
-                    List<CostCalculationViewModel> listProduct = new List<CostCalculationViewModel>();
-                    tem = tem.Where(data => data.ProductType.Contains("TransportationServices"));
-                    var listCostEntity = tem.AsEnumerable().ToList();
-                    foreach (var item in listCostEntity)
-                    {
-                        CostCalculationViewModel product = new CostCalculationViewModel(item, condition, userdemand);
-                        listProduct.Add(product);
-                    }
-                    result.Add("Message", "Read Data Success");
-                    result.Add("Data", listProduct);
-                    return Ok(result);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
+        //[Route("getTransportationCostCalculation")]
+        //[HttpGet]
+        //public IHttpActionResult CostCalculation(string condition, int userdemand)
+        //{
+        //    using (var db = new DB_Context())
+        //    {
+        //        try
+        //        {
+        //            var tem = db.Products.AsQueryable();
+        //            Dictionary<string, object> result = new Dictionary<string, object>();
+        //            List<CostCalculationViewModel> listProduct = new List<CostCalculationViewModel>();
+        //            tem = tem.Where(data => data.ProductType.Contains("TransportationServices"));
+        //            var listCostEntity = tem.AsEnumerable().ToList();
+        //            foreach (var item in listCostEntity)
+        //            {
+        //                CostCalculationViewModel product = new CostCalculationViewModel(item, condition, userdemand);
+        //                listProduct.Add(product);
+        //            }
+        //            result.Add("Message", "Read Data Success");
+        //            result.Add("Data", listProduct);
+        //            return Ok(result);
+        //        }
+        //        catch (Exception)
+        //        {
+        //            throw;
+        //        }
+        //    }
+        //}
 
-        [Route("calculateProductUnitPrice ")]
+        [Route("CustomCreateProduct")]
         [HttpPost]
-        public IHttpActionResult calculateProductUnitPrice([FromBody] ProductCustomViewModel dataBody)
+        public IHttpActionResult CustomCreateProduct([FromBody] ProductCustomViewModel dataBody)
         {
             try
             {
@@ -127,6 +128,32 @@ namespace Northwind.Controllers
                     db.Products.Add(product);
                     db.SaveChanges();
                     return Ok("Data Saved Successfully");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [Route("CalculateProductUnitPrice")]
+        [HttpPut]
+        public IHttpActionResult CalculateProductUnitPrice([FromBody] ProductCustomViewModel dataBody, string condition = null, int? userDemand = null, decimal? Duration = null)
+        {
+            try
+            {
+                using (var db = new DB_Context())
+                {
+                    Dictionary<string, object> result = new Dictionary<string, object>();
+                    List<ProductCustomViewModel> listProduct = new List<ProductCustomViewModel>();
+                    var product = db.Products.AsQueryable();
+                    foreach (var item in product)
+                    {
+                        
+                    }
+                    result.Add("Message", "Update data success");
+                    result.Add("data", listProduct);
+                    return Ok(result);
                 }
             }
             catch (Exception)

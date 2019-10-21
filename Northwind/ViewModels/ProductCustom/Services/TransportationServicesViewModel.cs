@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
 using Northwind.EntityFramworks;
 using Northwind.ViewModels.ProductCustom.Services;
+using AutoMapper;
 
 namespace Northwind.ViewModels.ProductCustom.Services
 {
@@ -69,7 +70,7 @@ namespace Northwind.ViewModels.ProductCustom.Services
                 this.CostRate;
         }
 
-        public decimal? rateCostCalculation(string condition = null, int? userDemand = null, decimal? Duration = null)
+        public decimal? RateCostCalculation(string condition = null, int? userDemand = null, decimal? Duration = null)
         {
             int? valueResult = null;
             if (CostCalculationMethod.Equals("FixPerRoute"))

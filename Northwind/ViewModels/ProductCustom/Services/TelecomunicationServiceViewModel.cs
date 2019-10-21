@@ -64,7 +64,7 @@ namespace Northwind.ViewModels.ProductCustom.Services
                 this.CostRate;       
         }
 
-        public decimal? rateCostCalculation(string condition = null, int? userDemand = null, decimal? Duration = null)
+        public decimal? RateCostCalculation(string condition = null, int? userDemand = null, decimal? Duration = null)
         {
             decimal? valueResult=null;
             decimal decCostRate = decimal.Parse(CostRate);

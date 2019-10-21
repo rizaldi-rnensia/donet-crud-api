@@ -92,13 +92,71 @@ namespace Northwind.ViewModels.ProductCustom
             {
                 TransportationServicesViewModel trans = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
                 prodDet = trans.ConvertToServ();
-                price = trans.rateCostCalculation(condition, userDemand, Duration);
+                price = trans.RateCostCalculation(condition, userDemand, Duration);
             }
             else if (this.ProductType.Equals("TelecommunicationServices"))
             {
                 TelecomunicationServiceViewModel tele = mapper.Map<TelecomunicationServiceViewModel>(this.ProductDetail);
                 prodDet = tele.ConvertToServ();
-                price = tele.rateCostCalculation(condition, userDemand, Duration);
+                price = tele.RateCostCalculation(condition, userDemand, Duration);
+            }
+            else
+            {
+                price = 0;
+                ProductDetail = null;
+            }
+            return new Product()
+            {
+                ProductID = this.ProductID,
+                ProductName = this.ProductName,
+                SupplierID = this.SupplierID,
+                CategoryID = this.CategoryID,
+                QuantityPerUnit = this.QuantityPerUnit,
+                UnitPrice = price,
+                UnitsInStock = this.UnitsInStock,
+                UnitsOnOrder = this.UnitsOnOrder,
+                ReorderLevel = this.ReorderLevel,
+                Discontinued = this.Discontinued,
+                ProductType = this.ProductType,
+                ProductDetail = prodDet
+            };
+        }
+
+        public Product ConvertToProduct2(string condition = null, int? userDemand = null, decimal? Duration = null)
+        {
+            decimal? price = null;
+            var prodDet = "";
+            var config = new MapperConfiguration(cfg => { });
+            var mapper = new Mapper(config);
+            if (this.ProductType.Equals("FoodAndBeverageItems"))
+            {
+                FoodBevItemViewModel food = mapper.Map<FoodBevItemViewModel>(this.ProductDetail);
+                prodDet = food.ConvertToItem();
+                price = food.unitPriceItemCalculation();
+            }
+            else if (this.ProductType.Equals("MaterialItems"))
+            {
+                MaterialViewModel materi = mapper.Map<MaterialViewModel>(this.ProductDetail);
+                prodDet = materi.ConvertToItem();
+                price = materi.unitPriceItemCalculation();
+            }
+            else if (this.ProductType.Equals("GarmentItems"))
+            {
+                GarmentViewModel garment = mapper.Map<GarmentViewModel>(this.ProductDetail);
+                prodDet = garment.ConvertToItem();
+                price = garment.unitPriceItemCalculation();
+            }
+            else if (this.ProductType.Equals("TransportationServices"))
+            {
+                TransportationServicesViewModel trans = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
+                prodDet = trans.ConvertToServ();
+                price = trans.RateCostCalculation(condition, userDemand, Duration);
+            }
+            else if (this.ProductType.Equals("TelecommunicationServices"))
+            {
+                TelecomunicationServiceViewModel tele = mapper.Map<TelecomunicationServiceViewModel>(this.ProductDetail);
+                prodDet = tele.ConvertToServ();
+                price = tele.RateCostCalculation(condition, userDemand, Duration);
             }
             else
             {
