@@ -9,6 +9,7 @@ using Northwind.EntityFramworks;
 using AutoMapper;
 using Northwind.ViewModels.ProductCustom.Items;
 using Northwind.ViewModels.ProductCustom.Services;
+using Northwind.Domain.Validation;
 
 namespace Northwind.ViewModels.ProductCustom
 {
@@ -68,6 +69,7 @@ namespace Northwind.ViewModels.ProductCustom
         {
             decimal? price=null;
             var prodDet = "";
+            ProductValidator validator = new ProductValidator();
             var config = new MapperConfiguration(cfg => { });
             var mapper = new Mapper(config);
             if (this.ProductType.Equals("FoodAndBeverageItems"))
@@ -75,109 +77,138 @@ namespace Northwind.ViewModels.ProductCustom
                 FoodBevItemViewModel food = mapper.Map<FoodBevItemViewModel>(this.ProductDetail);
                 prodDet = food.ConvertToItem();
                 price = food.unitPriceItemCalculation();
+                validator.isValidProductDetail(prodDet, ProductType);
             }   
             else if (this.ProductType.Equals("MaterialItems"))
             {
                 MaterialViewModel materi = mapper.Map<MaterialViewModel>(this.ProductDetail);
                 prodDet = materi.ConvertToItem();
                 price = materi.unitPriceItemCalculation();
+                validator.isValidProductDetail(prodDet, ProductType);
             }
             else if (this.ProductType.Equals("GarmentItems"))
             {
                 GarmentViewModel garment = mapper.Map<GarmentViewModel>(this.ProductDetail);
                 prodDet = garment.ConvertToItem();
                 price = garment.unitPriceItemCalculation();
+                validator.isValidProductDetail(prodDet, ProductType);
             }
             else if (this.ProductType.Equals("TransportationServices"))
             {
                 TransportationServicesViewModel trans = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
                 prodDet = trans.ConvertToServ();
                 price = trans.RateCostCalculation(condition, userDemand, Duration);
+                validator.isValidProductDetail(prodDet, ProductType);
             }
             else if (this.ProductType.Equals("TelecommunicationServices"))
             {
                 TelecomunicationServiceViewModel tele = mapper.Map<TelecomunicationServiceViewModel>(this.ProductDetail);
                 prodDet = tele.ConvertToServ();
                 price = tele.RateCostCalculation(condition, userDemand, Duration);
+                validator.isValidProductDetail(prodDet, ProductType);
             }
             else
             {
                 price = 0;
                 ProductDetail = null;
             }
-            return new Product()
+
+            if (validator.isValidProductDetail(prodDet, ProductType))
             {
-                ProductID = this.ProductID,
-                ProductName = this.ProductName,
-                SupplierID = this.SupplierID,
-                CategoryID = this.CategoryID,
-                QuantityPerUnit = this.QuantityPerUnit,
-                UnitPrice = price,
-                UnitsInStock = this.UnitsInStock,
-                UnitsOnOrder = this.UnitsOnOrder,
-                ReorderLevel = this.ReorderLevel,
-                Discontinued = this.Discontinued,
-                ProductType = this.ProductType,
-                ProductDetail = prodDet
-            };
+                return new Product()
+                {
+                    ProductID = this.ProductID,
+                    ProductName = this.ProductName,
+                    SupplierID = this.SupplierID,
+                    CategoryID = this.CategoryID,
+                    QuantityPerUnit = this.QuantityPerUnit,
+                    UnitPrice = price,
+                    UnitsInStock = this.UnitsInStock,
+                    UnitsOnOrder = this.UnitsOnOrder,
+                    ReorderLevel = this.ReorderLevel,
+                    Discontinued = this.Discontinued,
+                    ProductType = this.ProductType,
+                    ProductDetail = prodDet
+                };
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public Product ConvertToProduct2(string condition = null, int? userDemand = null, decimal? Duration = null)
         {
             decimal? price = null;
-            var prodDet = "";
+            Dictionary<string, object> prodDict = new Dictionary<string, object>();
+            ProductValidator validator = new ProductValidator();
             var config = new MapperConfiguration(cfg => { });
             var mapper = new Mapper(config);
+            
             if (this.ProductType.Equals("FoodAndBeverageItems"))
             {
                 FoodBevItemViewModel food = mapper.Map<FoodBevItemViewModel>(this.ProductDetail);
-                prodDet = food.ConvertToItem();
+                prodDict = food.fromItemToDict();
                 price = food.unitPriceItemCalculation();
+                validator.isValidProductDetail(prodDict, ProductType);
             }
             else if (this.ProductType.Equals("MaterialItems"))
             {
                 MaterialViewModel materi = mapper.Map<MaterialViewModel>(this.ProductDetail);
-                prodDet = materi.ConvertToItem();
+                prodDict = materi.fromItemToDict();
                 price = materi.unitPriceItemCalculation();
+                validator.isValidProductDetail(prodDict, ProductType);
             }
             else if (this.ProductType.Equals("GarmentItems"))
             {
                 GarmentViewModel garment = mapper.Map<GarmentViewModel>(this.ProductDetail);
-                prodDet = garment.ConvertToItem();
+                prodDict = garment.fromItemToDict();
                 price = garment.unitPriceItemCalculation();
+                validator.isValidProductDetail(prodDict, ProductType);
             }
             else if (this.ProductType.Equals("TransportationServices"))
             {
                 TransportationServicesViewModel trans = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
-                prodDet = trans.ConvertToServ();
+                prodDict = trans.fromServToDict();
                 price = trans.RateCostCalculation(condition, userDemand, Duration);
+                validator.isValidProductDetail(prodDict, ProductType);
             }
             else if (this.ProductType.Equals("TelecommunicationServices"))
             {
                 TelecomunicationServiceViewModel tele = mapper.Map<TelecomunicationServiceViewModel>(this.ProductDetail);
-                prodDet = tele.ConvertToServ();
+                prodDict = tele.fromServToDict();
                 price = tele.RateCostCalculation(condition, userDemand, Duration);
+                validator.isValidProductDetail(prodDict, ProductType);
             }
             else
             {
                 price = 0;
                 ProductDetail = null;
             }
-            return new Product()
+
+            if (validator.isValidProductDetail(prodDict, ProductType))
             {
-                ProductID = this.ProductID,
-                ProductName = this.ProductName,
-                SupplierID = this.SupplierID,
-                CategoryID = this.CategoryID,
-                QuantityPerUnit = this.QuantityPerUnit,
-                UnitPrice = price,
-                UnitsInStock = this.UnitsInStock,
-                UnitsOnOrder = this.UnitsOnOrder,
-                ReorderLevel = this.ReorderLevel,
-                Discontinued = this.Discontinued,
-                ProductType = this.ProductType,
-                ProductDetail = prodDet
-            };
+                return new Product()
+                {
+                    ProductID = this.ProductID,
+                    ProductName = this.ProductName,
+                    SupplierID = this.SupplierID,
+                    CategoryID = this.CategoryID,
+                    QuantityPerUnit = this.QuantityPerUnit,
+                    UnitPrice = price,
+                    UnitsInStock = this.UnitsInStock,
+                    UnitsOnOrder = this.UnitsOnOrder,
+                    ReorderLevel = this.ReorderLevel,
+                    Discontinued = this.Discontinued,
+                    ProductType = this.ProductType,
+                    ProductDetail = prodDict.ToString()
+                };
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public Dictionary<string, object> FinalResult(List<ProductCustomViewModel> listObject, string msg)
